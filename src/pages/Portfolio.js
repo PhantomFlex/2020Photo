@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export const Portfolio = () => {
-  const [disc, setDisc] = useState(0);
+  const [disc, setDisc] = useState(["leha loh", "sss"]);
 
   useEffect(() => {
     fetch("/leha", {

@@ -1,18 +1,29 @@
 const express = require("express");
 const path = require("path");
 const mysql = require("mysql");
+const bodyParser = require("body-parser");
 const app = express();
 
 app.use(express.static("../"));
 app.use(express.static("../build"));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
-app.get("/leha", (req, res) => {
-  const query = "select * from leha;";
+const secretPassword = "123";
+const secretUsername = "nick";
+
+app.post("/auth", (req, res) => {
   res.setHeader("Content-Type", "application/json;charset=utf-8");
-  db.query(query, (err, rows, field) => {
-    if (err) throw err;
-    res.json(rows);
-  });
+  if (req.body) {
+    if (
+      req.body.username === secretUsername &&
+      req.body.password === secretPassword
+    ) {
+      res.json({ ok: "hello nick" });
+    } else {
+      res.json({ ok: "idi nahyi samozvanez" });
+    }
+  }
 });
 
 app.get("*", (req, res) => {
