@@ -12,6 +12,7 @@ import { Wedding } from "./pages/Portfolio/components/Wedding";
 import { Events } from "./pages/Portfolio/components/Events";
 import { AirCamera } from "./pages/Portfolio/components/AirCamera";
 import { Admin } from "./pages/Admin";
+import { Videos } from "./pages/Videos";
 
 export const Router = () => (
   <BrowserRouter>
@@ -27,5 +28,6 @@ export const Router = () => (
     <Route path="/events" component={Events} />
     <Route path="/airCamera" component={AirCamera} />
     <Route path="/admin" component={Admin} />
+    <Route path="/videos" component={Videos} />
   </BrowserRouter>
 );

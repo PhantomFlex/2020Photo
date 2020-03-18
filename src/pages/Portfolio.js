@@ -1,20 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-export const Portfolio = () => {
-  const [disc, setDisc] = useState(["leha loh", "sss"]);
-
-  useEffect(() => {
-    fetch("/leha", {
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-      .then(res => res.json())
-      .then(res => setDisc(res));
-  }, []);
-
-  console.log(disc);
+export function Portfolio () {
   return (
     <div>
       <h1>Портфолио</h1>
@@ -36,8 +23,6 @@ export const Portfolio = () => {
       <li>
         <Link to="/aircamera">съмка с воздуха</Link>
       </li>
-
-      {disc && disc.map(el => <div key={el.disc}>{el.disc}</div>)}
     </div>
   );
 };
