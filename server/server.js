@@ -1,9 +1,9 @@
 const express = require("express");
 const path = require("path");
-const mysql = require("mysql2");
+const mysql = require("mysql");
 const bodyParser = require("body-parser");
 const app = express();
-const urlencodedParser = bodyParser.urlencoded({extended: false});
+const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 app.use(express.static("../"));
 app.use(express.static("../build"));
@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 const secretPassword = "123";
-const secretUsername = "nick";
+const secretUsername = "da";
 
 app.post("/auth", (req, res) => {
   res.setHeader("Content-Type", "application/json;charset=utf-8");
@@ -20,14 +20,12 @@ app.post("/auth", (req, res) => {
       req.body.username === secretUsername &&
       req.body.password === secretPassword
     ) {
-      res.json({ ok: "hello nick" });
+      res.json({ok: true });
     } else {
-      res.json({ ok: "idi nahyi samozvanez" });
+      res.json({ ok: false , error: "пароль неверный(есть жи!)" });
     }
   }
 });
-
-
 
 const port = process.env.PORT || 3001;
 const host = "localhost";
@@ -39,66 +37,69 @@ var connection = mysql.createConnection({
   host,
   user,
   password,
-  database: dbname,
+  database: dbname
 });
 
 connection.connect();
 
-
-app.get("/list", function(req, res){
+app.get("/list", function(req, res) {
   connection.query("SELECT * FROM videos", function(err, data) {
-    if(err) return console.log(err);
-    res.json(data)
+    if (err) return console.log(err);
+    res.json(data);
   });
 });
 
-app.get("/create", function(req, res){
+app.get("/create", function(req, res) {
   res.render("create.hbs");
 });
 
-app.post("/create", urlencodedParser, function (req, res) {
-         
-  if(!req.body) return res.sendStatus(400);
+app.post("/create", urlencodedParser, function(req, res) {
+  if (!req.body) return res.sendStatus(400);
   const name = req.body.name;
   const description = req.body.description;
   const link = req.body.link;
-  pool.query("INSERT INTO videos (name, description , link) VALUES (?,?,?)", [name,description,link], function(err, data) {
-    if(err) return console.log(err);
-    res.redirect("/");
-  });
+  const tag = req.body.tag;
+  connection.query(
+    `INSERT INTO videos (name, description, tag , link ) VALUES ("${name}","${description}","${tag}","${link}")`,
+    function(err, data) {
+      if (err) return console.log(err);
+      res.send({ ok: true });
+    }
+  );
 });
 
-app.get("/edit/:id", function(req, res){
+app.get("/edit/:id", function(req, res) {
   const id = req.params.id;
   pool.query("SELECT * FROM users WHERE id=?", [id], function(err, data) {
-    if(err) return console.log(err);
-     res.render("edit.hbs", {
-        user: data[0]
+    if (err) return console.log(err);
+    res.render("edit.hbs", {
+      user: data[0]
     });
   });
 });
 
-app.post("/edit", urlencodedParser, function (req, res) {
-         
-  if(!req.body) return res.sendStatus(400);
+app.post("/edit", urlencodedParser, function(req, res) {
+  if (!req.body) return res.sendStatus(400);
   const name = req.body.name;
   const description = req.body.description;
   const link = req.body.link;
   const id = req.body.id;
-   
-  pool.query("UPDATE videos SET name=?, description=?, link=? WHERE id=?", [name,description,link, id], function(err, data) {
-    if(err) return console.log(err);
-    res.redirect("/");
-  });
+
+  pool.query(
+    "UPDATE videos SET name=?, description=?, link=? WHERE id=?",
+    [name, description, link, id],
+    function(err, data) {
+      if (err) return console.log(err);
+      res.redirect("/");
+    }
+  );
 });
 
-app.post("/delete/:id", function(req, res){
-
-          
+app.post("/delete/:id", function(req, res) {
   const id = req.params.id;
-  pool.query("DELETE FROM users WHERE id=?", [id], function(err, data) {
-    if(err) return console.log(err);
-    res.redirect("/");
+  connection.query(`DELETE FROM videos WHERE id=${id}`, (err, data) => {
+    if (err) return console.log(err);
+    res.redirect("/videos");
   });
 });
 

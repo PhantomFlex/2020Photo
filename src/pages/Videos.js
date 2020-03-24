@@ -1,22 +1,103 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 
 export const Videos = () => {
-  const [disc, setDisc] = useState(["leha loh", "sss"]);
+  const [videos, setVideos] = useState([]);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [tag, setTag] = useState("");
+  const [link, setLink] = useState("");
+  
 
-  useEffect(() => {
+  const fetchVideos = () => {
     fetch("/list", {
       headers: {
         "Content-Type": "application/json"
       }
     })
       .then(res => res.json())
-      .then(res => setDisc(res));
+      .then(res => setVideos(res))
+      .catch(err => alert("ошибка, сервер недоступен"));
+  };
+
+  useEffect(() => {
+    fetchVideos();
   }, []);
-  console.log(disc);
-  return(
-      <div>
-          {disc && disc.map(el => <div key={el.disc}>{el.disc}</div>)}
-      </div>
+
+  return (
+    <div>
+      {videos.map((video, id) => (
+        <tr>
+          <td>{video.name}</td>
+          <td>{video.description}</td>
+          <td>{video.tag}</td>
+          <td>{video.link}</td>
+          <td>
+            <input
+              type="submit"
+              id={video.id}
+              value="Delete"
+              onClick={() => {
+                fetch(`/delete/${video.id}`, { method: "POST" }).then(
+                  fetchVideos()
+                );
+              }}
+            />
+          </td>
+        </tr>
+      ))}
+      <label>Имя</label>
+      <br />
+      <input
+        value={name}
+        onChange={e => {
+          setName(e.target.value);
+        }}
+      ></input>
+      <br />
+      <label>Описание</label>
+      <br />
+      <input
+        value={description}
+        onChange={e => {
+          setDescription(e.target.value);
+        }}
+      ></input>
+      <br />
+      <label>Tag</label>
+      <br/>
+      <select 
+        value={tag}
+        onChange={e => {
+          setTag(e.target.value);
+        }}>
+      <option>Реклама</option>
+      <option>Промо</option>
+      <option>Свадьбы</option>
+      <option>События</option>
+      <option>Съемка с воздуха</option>
+      <option>engtest</option>
+        </select>  
+      <br/>  
+      <label>Ссылка</label>
+      <br />
+      <input
+        value={link}
+        onChange={e => {
+          setLink(e.target.value);
+        }}
+      ></input>
+      <br />
+      <button
+        onClick={() => {
+          fetch("/create", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, description, link , tag })
+          }).then(fetchVideos());
+        }}
+      >
+        Отправить
+      </button>
+    </div>
   );
-  }; 
+};

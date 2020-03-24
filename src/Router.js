@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Route } from "react-router-dom";
-import { Mainmenu } from "./pages/Mainmenu";
+import { MainMenu } from "./pages/MainMenu";
 import { Aboutme } from "./pages/AboutMe";
 import { Portfolio } from "./pages/Portfolio";
 import { Price } from "./pages/Price";
@@ -12,10 +12,11 @@ import { Wedding } from "./pages/Portfolio/components/Wedding";
 import { Events } from "./pages/Portfolio/components/Events";
 import { AirCamera } from "./pages/Portfolio/components/AirCamera";
 import { Admin } from "./pages/Admin";
+import { Videos } from "./pages/Videos";
 
 export const Router = () => (
   <BrowserRouter>
-    <Route exact path="/" component={Mainmenu} />
+    <Route exact path="/" component={MainMenu} />
     <Route path="/about" component={Aboutme} />
     <Route path="/price" component={Price} />
     <Route path="/portfolio" component={Portfolio} />
@@ -27,5 +28,6 @@ export const Router = () => (
     <Route path="/events" component={Events} />
     <Route path="/airCamera" component={AirCamera} />
     <Route path="/admin" component={Admin} />
+    <Route path="/videos" component={Videos} />
   </BrowserRouter>
 );
