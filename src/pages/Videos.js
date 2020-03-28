@@ -70,11 +70,11 @@ export const Videos = () => {
         onChange={e => {
           setTag(e.target.value);
         }}>
-      <option>Реклама</option>
-      <option>Промо</option>
-      <option>Свадьбы</option>
-      <option>События</option>
-      <option>Съемка с воздуха</option>
+      <option>Advertising</option>
+      <option>Promo</option>
+      <option>Wedding</option>
+      <option>Events</option>
+      <option>AirCamera</option>
       <option>engtest</option>
         </select>  
       <br/>  
