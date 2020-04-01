@@ -7,6 +7,7 @@ export const Videos = () => {
   const [tag, setTag] = useState("");
   const [link, setLink] = useState("");
   const [tags, setTags] = useState([]);
+  const [preview, setPreview] = useState("");
 
   const fetchVideos = async () => {
     const res = await fetch("/api/videos", {
@@ -27,7 +28,7 @@ export const Videos = () => {
       fetch("/api/videos", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, description, link, tag })
+        body: JSON.stringify({ name, description, link, tag, preview })
       }).then(fetchVideos());
     } catch (e) {
       alert(e);
@@ -62,6 +63,7 @@ export const Videos = () => {
           {video.description}
           {video.tag}
           {video.link}
+          {video.preview}
           <input
             key={id + 1}
             type="submit"
@@ -111,6 +113,15 @@ export const Videos = () => {
         value={link}
         onChange={e => {
           setLink(e.target.value);
+        }}
+      ></input>
+      <br />
+      <label>preview</label>
+      <br />
+      <input
+        value={preview}
+        onChange={e => {
+          setPreview(e.target.value);
         }}
       ></input>
       <button onClick={createVideo}>Отправить</button>

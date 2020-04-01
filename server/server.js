@@ -15,8 +15,8 @@ const startServer = app => {
   const port = process.env.PORT || 3001;
   const host = "localhost";
   const user = "root";
-  const password = "123";
-  const dbport = "3307";
+  const password = "1290";
+  const dbport = "3306";
   const dbname = "shmelev";
   try {
     connection = mysql.createConnection({
@@ -43,8 +43,8 @@ const connection = startServer(app);
 
 // AUTH
 app.post("/auth", (req, res) => {
-  const secretPassword = "";
-  const secretUsername = "";
+  const secretPassword = "da";
+  const secretUsername = "123";
 
   res.setHeader("Content-Type", "application/json;charset=utf-8");
   if (req.body) {
@@ -84,8 +84,9 @@ app.post("/api/videos", urlencodedParser, function(req, res) {
   const description = req.body.description;
   const link = req.body.link;
   const tag = req.body.tag;
+  const preview = req.body.preview;
   connection.query(
-    `INSERT INTO videos (name, description, tag , link ) VALUES ("${name}","${description}","${tag}","${link}")`,
+    `INSERT INTO videos (name, description, tag , link , preview ) VALUES ("${name}","${description}","${tag}","${link}", "${preview}")`,
     function(err, data) {
       if (err) return console.log(err);
       res.send({ ok: true });

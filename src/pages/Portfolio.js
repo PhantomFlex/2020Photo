@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import "../pages/PopUp.css";
 export const Portfolio = () => {
   const [videos, setVideos] = useState([]);
   const [filteredVideos, setFilteredVideos] = useState([]);
@@ -76,16 +77,31 @@ export const Portfolio = () => {
           height: "100%",
           display: "grid",
           gridGap: "3px",
-          gridTemplateRows: "150px 150px 150px 150px 150px",
-          gridTemplateColumns: "repeat(6, 1fr)"
+          gridTemplateRows: "600px 600px 600px 600px 600px",
+          gridTemplateColumns: "repeat(3, 1fr)"
         }}
       >
         {filteredVideos.map((video, i) => {
           return (
             <div style={{ border: "1px solid red" }}>
-              <p>Имя: {video.name}</p>
-              <p>Описание: {video.description}</p>
-              <p>Сыллка: {video.link}</p>
+              <a href="#openModal">
+                <img src={video.preview} width="400" height="300" />
+              </a>
+              <div id="openModal" className="modalDialog">
+                <div>
+                  <a href="#close" title="Close" className="close">
+                    X
+                  </a>
+                  <iframe
+                    width="650"
+                    height="450"
+                    src={video.link}
+                    frameborder="0"
+                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                  />
+                </div>
+              </div>
               <p>
                 Тег:
                 {tags.filter(tag => parseInt(video.tag) === tag.id)[0]?.name}
